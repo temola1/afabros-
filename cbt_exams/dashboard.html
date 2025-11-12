@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="fas fa-tachometer-alt"></i> Student Dashboard</h4>
+            </div>
+            <div class="card-body">
+                <h5>Welcome, {{ current_user.full_name }}!</h5>
+                <p class="text-muted">You are logged in as a student. You can take exams and view your results here.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card text-center bg-light">
+                            <div class="card-body">
+                                <i class="fas fa-play-circle fa-2x text-primary mb-2"></i>
+                                <h5>Take Exam</h5>
+                                <p>Start a new examination</p>
+                                <a href="{{ url_for('exam') }}" class="btn btn-primary">Start Exam</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card text-center bg-light">
+                            <div class="card-body">
+                                <i class="fas fa-chart-bar fa-2x text-success mb-2"></i>
+                                <h5>View Results</h5>
+                                <p>Check your exam results</p>
+                                <a href="{{ url_for('results') }}" class="btn btn-success">View Results</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-history"></i> Recent Results</h5>
+            </div>
+            <div class="card-body">
+                {% if results %}
+                    {% for result in results %}
+                    <div class="border-bottom pb-2 mb-2">
+                        <strong>{{ result.subject }}</strong><br>
+                        Score: {{ result.score }}/{{ result.total_questions }}<br>
+                        Percentage: {{ "%.1f"|format(result.percentage) }}%<br>
+                        <small class="text-muted">{{ result.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No exam results yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
